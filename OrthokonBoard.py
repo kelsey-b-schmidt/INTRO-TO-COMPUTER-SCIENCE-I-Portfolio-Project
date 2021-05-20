@@ -40,12 +40,15 @@ class OrthokonBoard:
             initializes the starting board positions,
             and initializes the current state to "UNFINISHED"
         2. A method named print_board that prints out the board.
+            (Does not return anything, print function is within the method)
         3. A get method named get_current_state, which returns the current state.
         4. A method named make_move that takes four parameters (in the specific order listed):
                 A. The row of the piece being moved
                 B. The column of the piece being moved
                 C. The row of the intended position that piece will be moved to
                 D. The column f the intended position that piece will be moved to
+        Rows are numbered from top to bottom (0, 1, 2, 3),
+        Columns are numbered from left to right (0, 1, 2, 3)
         If the game has already been won, or if the move is not valid,
         make_move will return False.
         Otherwise, it will record the move, update the board,
@@ -53,23 +56,45 @@ class OrthokonBoard:
     """
 
     def __init__(self):
-        self._board = [["Y","Y","Y","Y"],[".",".",".","."],[".",".",".","."],["R","R","R","R"]]
+        self._board = [["R","R","R","R"],[".",".",".","."],[".",".",".","."],["Y","Y","Y","Y"]]
         self._current_state = "UNFINISHED"  # the default state of the game with no moves made is "UNFINISHED"
 
     def get_current_state(self):        # get method to get the current game state (Who won?)
         return self._current_state      # returns "RED_WON", "YELLOW_WON", or "UNFINISHED"
 
-    def print_board(self):
+    def print_board(self):              # prints the board in a pretty fashion
         print("_" * 11)
         for line in self._board:
             print("|", *line[:], "|")
         print("‾" * 11)
 
     def make_move(self, piece_row, piece_column, position_row, position_column):    # method to make each move
-        return True
+        if self._current_state != "UNFINISHED":     # if the game state is anything but "UNFINISHED"
+            print("The game is already over!")
+            return False                            # returns False, as the current game is already over
+
+        if (piece_row or piece_column or position_row or position_column) not in range(0,4):
+                                            # if any of the piece or position values are not 0-3 (not valid positions)
+            print("Not a valid board position")
+            return False                    # returns False, and a new valid move must be made
+
+        if self._board[piece_row][piece_column] == ".":     # if the chosen starting piece position does not
+                                                            # have a piece there (".")
+            print("There is not a piece there to move!")
+            return False                                    # returns False, and a new valid move must be made
+
+        if self._board[position_row][position_column] == "Y" or "R":  # if the chosen position already has a piece there
+                                                                        #  ("Y" or "R")
+            print("There's already a piece there!")
+            return False                                    # returns False, and a new valid move must be made
+
+
+
+
 
 
 
 board = OrthokonBoard()
 board.print_board()
+board.make_move(3,2,0,2)  # The yellow player moves a piece diagonally, flipping one red piece to yellow
 print(board.get_current_state())
