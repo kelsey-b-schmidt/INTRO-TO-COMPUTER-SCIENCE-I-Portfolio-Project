@@ -56,7 +56,7 @@ class OrthokonBoard:
     """
 
     def __init__(self):
-        self._board = [["Y",".",".","."],[".",".",".","."],[".",".",".","."],[".",".",".","."]]
+        self._board = [[".",".",".","."],[".",".",".","."],[".",".",".","."],[".",".",".","Y"]]
         self._current_state = "UNFINISHED"  # the default state of the game with no moves made is "UNFINISHED"
 
     def get_current_state(self):        # get method to get the current game state (Who won?)
@@ -164,7 +164,7 @@ class OrthokonBoard:
             row_int = ""
 
         for int in range(4):  # check diag-up-left of piece for valid move in that direction
-            print("curr int:", int)
+            #print("curr int:", int)
             if piece_row == 0:
                 break
             if piece_column == 0:
@@ -173,41 +173,41 @@ class OrthokonBoard:
                 continue
             if (int == 1) and ((piece_row == 1) or (piece_column == 1)) :
                 if self._board[piece_row - int][piece_column - int] == ".":
-                    print("checking diag-up-left coordinates")
-                    print(piece_row - int, piece_column - int)
+                    #print("checking diag-up-left coordinates")
+                    #print(piece_row - int, piece_column - int)
                     row_int = piece_row - int
                     column_int = piece_column - int
-                    print("current valid diag-up-left space", row_int, column_int)
+                    #print("current valid diag-up-left space", row_int, column_int)
                     break
                 else:
                     break
             if (int == 2) and ((piece_row == 2 or 3) and (piece_column == 2 or 3))  :
-                print("int=2")
+                #print("int=2")
                 for int in range(3) :
-                    print("range int=", int)
+                    #print("range int=", int)
                     if int == 0 :
                         continue
                     if self._board[piece_row - int][piece_column - int] == ".":
-                        print("checking diag-up-left coordinates")
-                        print(piece_row - int, piece_column - int)
+                        #print("checking diag-up-left coordinates")
+                        #print(piece_row - int, piece_column - int)
                         row_int = piece_row - int
                         column_int = piece_column - int
-                        print("current valid diag-up-left space", row_int, column_int)
+                        #print("current valid diag-up-left space", row_int, column_int)
                         continue
                     else:
                         break
             if (int == 3) and ((piece_row == 3) and (piece_column == 3)) :
-                print("int=3")
+                #print("int=3")
                 for int in range(4) :
-                    print("range int=", int)
+                    #print("range int=", int)
                     if int == 0 :
                         continue
                     if self._board[piece_row - int][piece_column - int] == ".":
-                        print("checking diag-up-left coordinates")
-                        print(piece_row - int, piece_column - int)
+                        #print("checking diag-up-left coordinates")
+                        #print(piece_row - int, piece_column - int)
                         row_int = piece_row - int
                         column_int = piece_column - int
-                        print("current valid diag-up-left space", row_int, column_int)
+                        #print("current valid diag-up-left space", row_int, column_int)
                         continue
                     else:
                         break
@@ -218,7 +218,7 @@ class OrthokonBoard:
             column_int = ""
 
         for int in range(4):  # check diag-down-right of piece for valid move in that direction
-            print("curr int:", int)
+            #print("curr int:", int)
             if piece_row == 3:
                 break
             if piece_column == 3:
@@ -227,41 +227,41 @@ class OrthokonBoard:
                 continue
             if (int == 1) and ((piece_row == 2) or (piece_column == 2)) :
                 if self._board[piece_row + int][piece_column + int] == ".":
-                    print("checking diag-down-right coordinates")
-                    print(piece_row + int, piece_column + int)
+                    #print("checking diag-down-right coordinates")
+                    #print(piece_row + int, piece_column + int)
                     row_int = piece_row + int
                     column_int = piece_column + int
-                    print("current valid diag-down-right space", row_int, column_int)
+                    #print("current valid diag-down-right space", row_int, column_int)
                     break
                 else:
                     break
             if (int == 2) and ((piece_row == 0 or 1) and (piece_column == 0 or 1))  :
-                print("int=2")
+                #print("int=2")
                 for int in range(3) :
-                    print("range int=", int)
+                    #print("range int=", int)
                     if int == 0 :
                         continue
                     if self._board[piece_row + int][piece_column + int] == ".":
-                        print("checking diag-down-right coordinates")
-                        print(piece_row + int, piece_column + int)
+                        #print("checking diag-down-right coordinates")
+                        #print(piece_row + int, piece_column + int)
                         row_int = piece_row + int
                         column_int = piece_column + int
-                        print("current valid diag-down-right space", row_int, column_int)
+                        #print("current valid diag-down-right space", row_int, column_int)
                         continue
                     else:
                         break
             if (int == 3) and ((piece_row == 0) and (piece_column == 0)) :
-                print("int=3")
+                #print("int=3")
                 for int in range(4) :
-                    print("range int=", int)
+                    #print("range int=", int)
                     if int == 0 :
                         continue
                     if self._board[piece_row + int][piece_column + int] == ".":
-                        print("checking diag-down-right coordinates")
-                        print(piece_row + int, piece_column + int)
+                        #print("checking diag-down-right coordinates")
+                        #print(piece_row + int, piece_column + int)
                         row_int = piece_row + int
                         column_int = piece_column + int
-                        print("current valid diag-down-right space", row_int, column_int)
+                        #print("current valid diag-down-right space", row_int, column_int)
                         continue
                     else:
                         break
@@ -271,7 +271,59 @@ class OrthokonBoard:
             row_int = ""
             column_int = ""
 
-
+        for int in range(4):  # check diag-down-left of piece for valid move in that direction
+            print("curr int:", int)
+            if piece_row == 3:
+                break
+            if piece_column == 0:
+                break
+            if int == 0:
+                continue
+            if (int == 1) and ((piece_row == 2) or (piece_column == 1)) :
+                if self._board[piece_row + int][piece_column - int] == ".":
+                    print("checking diag-down-left coordinates")
+                    print(piece_row + int, piece_column - int)
+                    row_int = piece_row + int
+                    column_int = piece_column - int
+                    print("current valid diag-down-left space", row_int, column_int)
+                    break
+                else:
+                    break
+            if (int == 2) and ((piece_row == 1) or (piece_column == 2 ))  :
+                print("int=2")
+                for int in range(3) :
+                    print("range int=", int)
+                    if int == 0 :
+                        continue
+                    if self._board[piece_row + int][piece_column - int] == ".":
+                        print("checking diag-down-left coordinates")
+                        print(piece_row + int, piece_column - int)
+                        row_int = piece_row + int
+                        column_int = piece_column - int
+                        print("current valid diag-down-left space", row_int, column_int)
+                        continue
+                    else:
+                        break
+            if (int == 3) and ((piece_row == 0) and (piece_column == 3)) :
+                print("int=3")
+                for int in range(4) :
+                    print("range int=", int)
+                    if int == 0 :
+                        continue
+                    if self._board[piece_row + int][piece_column - int] == ".":
+                        print("checking diag-down-left coordinates")
+                        print(piece_row + int, piece_column - int)
+                        row_int = piece_row + int
+                        column_int = piece_column - int
+                        print("current valid diag-down-left space", row_int, column_int)
+                        continue
+                    else:
+                        break
+        if (row_int and column_int) != "" :
+            valid_moves.append((row_int, column_int))
+            #print("current valid moves:", valid_moves)
+            row_int = ""
+            column_int = ""
 
 
 
@@ -362,7 +414,7 @@ class OrthokonBoard:
 
 board = OrthokonBoard()
 board.print_board()
-board.make_move(0,0,1,3)
+board.make_move(3,3,1,3)
 board.print_board()
 print(board.get_current_state())
 
