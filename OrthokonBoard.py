@@ -56,7 +56,7 @@ class OrthokonBoard:
     """
 
     def __init__(self):
-        self._board = [["R","R","R","R"],[".",".",".","."],[".",".",".","."],["Y","Y","Y","Y"]]
+        self._board = [["R","R","R","R"],[".",".",".","."],[".",".",".","R"],[".",".","Y","."]]
         self._current_state = "UNFINISHED"  # the default state of the game with no moves made is "UNFINISHED"
 
     def get_current_state(self):        # get method to get the current game state (Who won?)
@@ -69,8 +69,9 @@ class OrthokonBoard:
         print("‾" * 11)
 
     def make_move(self, piece_row, piece_column, position_row, position_column):    # method to make each move
+
         if self._current_state != "UNFINISHED":     # if the game state is anything but "UNFINISHED"
-            print("The game is already over!")
+            print("The game is already over")
             return False                            # returns False, as the current game is already over
 
         if (piece_row or piece_column or position_row or position_column) not in range(0,4):
@@ -78,23 +79,98 @@ class OrthokonBoard:
             print("Not a valid board position")
             return False                    # returns False, and a new valid move must be made
 
-        if self._board[piece_row][piece_column] == ".":     # if the chosen starting piece position does not
-                                                            # have a piece there (".")
-            print("There is not a piece there to move!")
-            return False                                    # returns False, and a new valid move must be made
+        if self._board[piece_row][piece_column] == "." :
+                                            # if no piece at selected piece position
+            print("There's no piece there to move")
+            return False                    # returns False, and a new valid move must be made
 
-        if self._board[position_row][position_column] == "Y" or "R":  # if the chosen position already has a piece there
-                                                                        #  ("Y" or "R")
-            print("There's already a piece there!")
-            return False                                    # returns False, and a new valid move must be made
+        valid_moves = []
+        column_int = ""
+        row_int = ""
+
+        for int in range(piece_column - 1, -1, -1):  # check to the left of piece for valid move in that direction
+            print("checking left coordinates")
+            print(piece_row, int)
+            if self._board[piece_row][int] == ".":
+                column_int = int
+                print("current valid left space", piece_row, column_int)
+                continue
+            else:
+                break
+        if column_int != "":
+            valid_moves.append((piece_row, column_int))
+            print("current valid moves:", valid_moves)
+            column_int = ""
+
+        for int in range(piece_column + 1, 4):  # check to the right of piece for valid move in that direction
+            print("checking right coordinates")
+            print(piece_row, int)
+            if self._board[piece_row][int] == ".":
+                column_int = int
+                print("current valid right space", piece_row, column_int)
+                continue
+            else:
+                break
+        if column_int != "":
+            valid_moves.append((piece_row, column_int))
+            print("current valid moves:", valid_moves)
+            column_int = ""
+
+        for int in range(piece_row + 1, 4):  # check downwards of piece for valid move in that direction
+            print("checking down coordinates")
+            print(int, piece_column)
+            if self._board[int][piece_column] == ".":
+                row_int = int
+                print("current valid downward space", row_int, piece_column)
+                continue
+            else:
+                break
+        if row_int != "":
+            valid_moves.append((row_int, piece_column))
+            print("current valid moves:", valid_moves)
+            row_int = ""
+
+        for int in range(piece_row - 1, -1, -1):  # check upwards of piece for valid move in that direction
+            print("checking up coordinates")
+            print(int, piece_column)
+            if self._board[int][piece_column] == ".":
+                row_int = int
+                print("current valid upward space", row_int, piece_column)
+                continue
+            else:
+                break
+        if row_int != "":
+            valid_moves.append((row_int, piece_column))
+            print("current valid moves:", valid_moves)
+            row_int = ""
+
+        for int in range(piece_row - 1, -1, -1):  # check diagonally up-left of piece for valid move in that direction
+            print("checking diag-up-left coordinates")
+            print(int, int-1)
+            if self._board[int][int-1] == ".":
+                row_int = int
+                column_int = int-1
+                print("current valid diag-up-left space", row_int, column_int)
+                continue
+            else:
+                break
+        if row_int and column_int != "":
+            valid_moves.append((row_int, column_int))
+            print("current valid moves:", valid_moves)
+            row_int = ""
+            column_int = ""
 
 
 
 
+
+
+        # self._board[piece_row][piece_column]
+        # self._board[position_row][position_column]
 
 
 
 board = OrthokonBoard()
 board.print_board()
-board.make_move(3,2,0,2)  # The yellow player moves a piece diagonally, flipping one red piece to yellow
+board.make_move(3,2,2,1)  # The yellow player moves a piece diagonally, flipping one red piece to yellow
 print(board.get_current_state())
