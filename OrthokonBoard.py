@@ -56,7 +56,7 @@ class OrthokonBoard:
     """
 
     def __init__(self):
-        self._board = [[".","Y",".","."],[".",".",".","."],[".",".",".","."],[".",".",".","."]]
+        self._board = [[".",".",".","."],[".",".",".","."],[".",".",".","."],[".",".",".","Y"]]
         self._current_state = "UNFINISHED"  # the default state of the game with no moves made is "UNFINISHED"
 
     def get_current_state(self):        # get method to get the current game state (Who won?)
@@ -78,6 +78,10 @@ class OrthokonBoard:
                                             # if any of the piece or position values are not 0-3 (not valid positions)
             print("Not a valid board position")
             return False                    # returns False, and a new valid move must be made
+
+        if self._board[piece_row][piece_column] == "." :    # if no piece at intended piece position,
+            print("There's no piece there to move!")
+            return False                                    # returns False, and a new valid move must be made
 
         valid_moves = []
         column_int = ""
@@ -159,105 +163,105 @@ class OrthokonBoard:
             print("current valid moves:", valid_moves)
             row_int = ""
 
-        for int in range(piece_row + 1):  # check diag-up-left of piece for valid move in that direction
-            print("curr int:", int)
-            if piece_row == 0:
-                break
-            if piece_column == 0:
-                break
-            if int == 0:
-                continue
-            if self._board[piece_row - int][piece_column - int] == ".":
-                print("checking diag-up-left coordinates")
-                print(piece_row - int, piece_column - int)
-                row_int = piece_row - int
-                column_int = piece_column - int
-                print("current valid diag-up-left space", row_int, column_int)
-                continue
-            else:
-                break
-        if row_int != "":
-            valid_moves.append((row_int, column_int))
-            print("current valid moves:", valid_moves)
-            row_int = ""
-            column_int = ""
-
-        for int in range(4 - piece_column):  # check diag-down-right of piece for valid move in that direction
-            if piece_row == 3:
-                break
-            if piece_column == 3:
-                break
-            print("curr int:", int)
-            if piece_column == 3:
-                break
-            if int == 0:
-                continue
-            if self._board[piece_row + int][piece_column + int] == ".":
-                print("checking diag-down-right coordinates")
-                print(piece_row + int, piece_column + int)
-                row_int = piece_row + int
-                column_int = piece_column + int
-                print("current valid diag-down-right space", row_int, column_int)
-                continue
-            else:
-                break
-        if row_int != "":
-            valid_moves.append((row_int, column_int))
-            print("current valid moves:", valid_moves)
-            row_int = ""
-            column_int = ""
-
-        for int in range(piece_row + 1):  # check diag-up-right of piece for valid move in that direction
-            print("curr int:", int)
-            if piece_row == 0:
-                break
-            if piece_column == 3:
-                break
-            if int == 0:
-                continue
-            if self._board[piece_row - int][piece_column + int] == ".":
-                print("checking diag-up-right coordinates")
-                print(piece_row - int, piece_column + int)
-                row_int = piece_row - int
-                column_int = piece_column + int
-                print("current valid diag-up-right space", row_int, column_int)
-                continue
-            else:
-                break
-        if row_int != "":
-            valid_moves.append((row_int, column_int))
-            print("current valid moves:", valid_moves)
-            row_int = ""
-            column_int = ""
-
-        for int in range(4 - piece_column):  # check diag-down-left of piece for valid move in that direction
-            print("curr int:", int)
-            if piece_row == 3:
-                break
-            if piece_column == 0:
-                break
-            if int == 0:
-                continue
-            if self._board[piece_row + int][piece_column - int] == ".":
-                print("checking diag-down-left coordinates")
-                print(piece_row + int, piece_column - int)
-                row_int = piece_row + int
-                column_int = piece_column - int
-                print("current valid diag-down-left space", row_int, column_int)
-                continue
-            else:
-                break
-        if row_int != "":
-            valid_moves.append((row_int, column_int))
-            print("current valid moves:", valid_moves)
-            row_int = ""
-            column_int = ""
+#        for int in range(piece_row + 1):  # check diag-up-left of piece for valid move in that direction
+#            print("curr int:", int)
+#            if piece_row == 0:
+#                break
+#            if piece_column == 0:
+#                break
+#            if int == 0:
+#                continue
+#            if self._board[piece_row - int][piece_column - int] == ".":
+#                print("checking diag-up-left coordinates")
+#                print(piece_row - int, piece_column - int)
+#                row_int = piece_row - int
+#                column_int = piece_column - int
+#                print("current valid diag-up-left space", row_int, column_int)
+#                continue
+#            else:
+#                break
+#        if row_int != "":
+#            valid_moves.append((row_int, column_int))
+#            print("current valid moves:", valid_moves)
+#            row_int = ""
+#            column_int = ""
+#
+#        for int in range(4 - piece_column):  # check diag-down-right of piece for valid move in that direction
+#            if piece_row == 3:
+#                break
+#            if piece_column == 3:
+#                break
+#            print("curr int:", int)
+#            if piece_column == 3:
+#                break
+#            if int == 0:
+#                continue
+#            if self._board[piece_row + int][piece_column + int] == ".":
+#                print("checking diag-down-right coordinates")
+#                print(piece_row + int, piece_column + int)
+#                row_int = piece_row + int
+#                column_int = piece_column + int
+#                print("current valid diag-down-right space", row_int, column_int)
+#                continue
+#            else:
+#               break
+#        if row_int != "":
+#            valid_moves.append((row_int, column_int))
+#            print("current valid moves:", valid_moves)
+#            row_int = ""
+#            column_int = ""
+#
+#        for int in range(piece_row + 1):  # check diag-up-right of piece for valid move in that direction
+#            print("curr int:", int)
+#            if piece_row == 0:
+#                break
+#            if piece_column == 3:
+#                break
+#            if int == 0:
+#                continue
+#            if self._board[piece_row - int][piece_column + int] == ".":
+#                print("checking diag-up-right coordinates")
+#                print(piece_row - int, piece_column + int)
+#                row_int = piece_row - int
+#                column_int = piece_column + int
+#                print("current valid diag-up-right space", row_int, column_int)
+#                continue
+#            else:
+#                break
+#        if row_int != "":
+#            valid_moves.append((row_int, column_int))
+#            print("current valid moves:", valid_moves)
+#            row_int = ""
+#            column_int = ""
+#
+#        for int in range(4 - piece_column):  # check diag-down-left of piece for valid move in that direction
+#            print("curr int:", int)
+#            if piece_row == 3:
+#                break
+#            if piece_column == 0:
+#                break
+#            if int == 0:
+#                continue
+#            if self._board[piece_row + int][piece_column - int] == ".":
+#                print("checking diag-down-left coordinates")
+#                print(piece_row + int, piece_column - int)
+#                row_int = piece_row + int
+#                column_int = piece_column - int
+#                print("current valid diag-down-left space", row_int, column_int)
+#                continue
+#            else:
+#                break
+#        if row_int != "":
+#            valid_moves.append((row_int, column_int))
+#            print("current valid moves:", valid_moves)
+#            row_int = ""
+#            column_int = ""
 
         if (position_row,position_column) not in valid_moves :  # check if intended move is valid
             print("Move is not valid!")
             return False
-
-        print("Move is valid!")
+        else:
+            print("Move is valid!")
 
         if self._board[piece_row][piece_column] == "Y":
             self._board[position_row][position_column] = "Y"
@@ -307,19 +311,19 @@ class OrthokonBoard:
             self._current_state = "RED_WON"
             return True
 
-        red_list = []
-        yellow_list = []
-
-        for row in range(4) :
-            for column in range(4) :
-                if self._board[row][column] == "." :
-                    continue
-                if self._board[row][column] == "R" :
-                    red_list.append((row,column))
-                elif self._board[row][column] == "Y" :
-                    yellow_list.append((row,column))
-
-        print(red_list)
+#        red_list = []
+#        yellow_list = []
+#
+#        for row in range(4) :
+#            for column in range(4) :
+#                if self._board[row][column] == "." :
+#                    continue
+#                if self._board[row][column] == "R" :
+#                    red_list.append((row,column))
+#                elif self._board[row][column] == "Y" :
+#                    yellow_list.append((row,column))
+#
+#        print(red_list)
 
 
 
@@ -335,7 +339,7 @@ class OrthokonBoard:
 
 board = OrthokonBoard()
 board.print_board()
-board.make_move(0,1,3,1)
+board.make_move(3,3,0,0)
 board.print_board()
 print(board.get_current_state())
 
