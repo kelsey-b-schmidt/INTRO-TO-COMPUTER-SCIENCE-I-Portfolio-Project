@@ -56,7 +56,7 @@ class OrthokonBoard:
     """
 
     def __init__(self):
-        self._board = [["Y","R","R","Y"],["Y","Y","Y","Y"],[".",".",".","."],[".",".",".","."]]
+        self._board = [[".","Y",".","."],[".",".",".","."],[".",".",".","."],[".",".",".","."]]
         self._current_state = "UNFINISHED"  # the default state of the game with no moves made is "UNFINISHED"
 
     def get_current_state(self):        # get method to get the current game state (Who won?)
@@ -68,7 +68,7 @@ class OrthokonBoard:
             print("|", *line[:], "|")
         print("‾" * 11)
 
-    def move_valid(self, piece_row, piece_column, position_row, position_column):
+    def make_move(self, piece_row, piece_column, position_row, position_column):    # method to make each move
 
         if self._current_state != "UNFINISHED":     # if the game state is anything but "UNFINISHED"
             print("The game is already over")
@@ -182,7 +182,7 @@ class OrthokonBoard:
             row_int = ""
             column_int = ""
 
-        for int in range(4 - piece_row):  # check diag-down-right of piece for valid move in that direction
+        for int in range(4 - piece_column):  # check diag-down-right of piece for valid move in that direction
             if piece_row == 3:
                 break
             if piece_column == 3:
@@ -230,7 +230,7 @@ class OrthokonBoard:
             row_int = ""
             column_int = ""
 
-        for int in range(4 - piece_row):  # check diag-down-left of piece for valid move in that direction
+        for int in range(4 - piece_column):  # check diag-down-left of piece for valid move in that direction
             print("curr int:", int)
             if piece_row == 3:
                 break
@@ -259,7 +259,6 @@ class OrthokonBoard:
 
         print("Move is valid!")
 
-    def flip_pieces(self, piece_row, piece_column, position_row, position_column):
         if self._board[piece_row][piece_column] == "Y":
             self._board[position_row][position_column] = "Y"
             self._board[piece_row][piece_column] = "."
@@ -291,27 +290,38 @@ class OrthokonBoard:
                 if self._board[position_row + 1][position_column] != ".":
                     self._board[position_row + 1][position_column] = "R"
 
-    def who_won(self, piece_row, piece_column, position_row, position_column):
         for row in self._board:
-            if "R" in row:
+            if "R" not in row:
+                continue
+            else:
                 print("R in row")
                 break
             self._current_state = "YELLOW_WON"
             return True
-        return True
         for row in self._board:
-            if "Y" in row:
+            if "Y" not in row:
+                continue
+            else:
                 print("Y in row")
                 break
             self._current_state = "RED_WON"
             return True
-        return True
 
-    def make_move(self, piece_row, piece_column, position_row, position_column):    # method to make each move
+        red_list = []
+        yellow_list = []
 
-        board.move_valid(piece_row, piece_column, position_row, position_column)
-        board.flip_pieces(piece_row, piece_column, position_row, position_column)
-        board.who_won(piece_row, piece_column, position_row, position_column)
+        for row in range(4) :
+            for column in range(4) :
+                if self._board[row][column] == "." :
+                    continue
+                if self._board[row][column] == "R" :
+                    red_list.append((row,column))
+                elif self._board[row][column] == "Y" :
+                    yellow_list.append((row,column))
+
+        print(red_list)
+
+
 
 
 
@@ -325,7 +335,7 @@ class OrthokonBoard:
 
 board = OrthokonBoard()
 board.print_board()
-board.make_move(1,3,3,3)
+board.make_move(0,1,3,1)
 board.print_board()
 print(board.get_current_state())
 
