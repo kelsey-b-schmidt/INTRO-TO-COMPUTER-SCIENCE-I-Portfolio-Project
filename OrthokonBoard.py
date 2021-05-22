@@ -321,14 +321,14 @@ class OrthokonBoard:
                     yellow_list.append((row, column))
 
         for tuple in red_list:                      # check if any Red pieces can move
-            board.valid_moves(tuple[0], tuple[1])
+            self.valid_moves(tuple[0], tuple[1])
 
         if self._valid_moves == []:                 # if no valid moves for any of the red pieces,
             self._current_state = "YELLOW_WON"      # Yellow wins
             return True
 
         for tuple in yellow_list:                      # check if any Yellow pieces can move
-            board.valid_moves(tuple[0], tuple[1])
+            self.valid_moves(tuple[0], tuple[1])
 
         if self._valid_moves == []:                 # if no valid moves for any of the yellow pieces,
             self._current_state = "RED_WON"      # Red wins
@@ -348,7 +348,7 @@ class OrthokonBoard:
         if self._board[piece_row][piece_column] == "." :    # if no piece at intended piece position,
             return False                                    # returns False, and a new valid move must be made
 
-        board.valid_moves(piece_row, piece_column)      # calls valid_moves function, which updates the
+        self.valid_moves(piece_row, piece_column)      # calls valid_moves method, which updates the
                                                         # valid_moves list
 
         if (position_row, position_column) not in self._valid_moves:  # check intended move against valid_moves
@@ -385,5 +385,5 @@ class OrthokonBoard:
                 if self._board[position_row + 1][position_column] != ".":
                     self._board[position_row + 1][position_column] = "R"
 
-        board.who_won()     # calls who_won to see if any winning conditions have been met
+        self.who_won()     # calls the who_won method to see if any winning conditions have been met
 
