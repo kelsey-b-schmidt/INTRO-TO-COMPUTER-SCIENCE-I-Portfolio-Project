@@ -32,31 +32,35 @@ class OrthokonBoard:
     A player wins upon making a move that either flips over
     the remaining opponent pieces or leaves the opponent without a move.
     The class has private data members for:
-            1. a representation of the board (4 lists within a list)
-            2. the current state, which holds one of the three following values:
+            1. A representation of the board (4 lists within a list)
+            2. The current state, which holds one of the three following values:
                 "RED_WON", "YELLOW_WON", or "UNFINISHED"
+            3. A list that holds the current valid moves for the selected piece (in tuples)
     The class includes the following methods:
-        1. An init method that takes no parameters,
-            initializes the starting board positions,
-            and initializes the current state to "UNFINISHED"
+        1. An init method that takes no parameters and initializes all data members.
         2. A method named print_board that prints out the board.
             (Does not return anything, print function is within the method)
         3. A get method named get_current_state, which returns the current state.
-        4. A method named make_move that takes four parameters (in the specific order listed):
+        4. A method named valid_moves that checks for available valid moves for a selected piece.
+            Takes two parameters (in the specific order listed):
+                A. The row of the piece being moved
+                B. The column of the piece being moved
+        5. A method called who_won that checks who won
+        6. A method named make_move that takes four parameters (in the specific order listed):
                 A. The row of the piece being moved
                 B. The column of the piece being moved
                 C. The row of the intended position that piece will be moved to
                 D. The column f the intended position that piece will be moved to
+
         Rows are numbered from top to bottom (0, 1, 2, 3),
         Columns are numbered from left to right (0, 1, 2, 3)
-        If the game has already been won, or if the move is not valid,
-        make_move will return False.
+        If the game has already been won, or if the move is not valid, make_move will return False.
         Otherwise, it will record the move, update the board,
         update the current state if the move caused a win, and return True.
     """
 
     def __init__(self):
-        self._board = [["R","R","R","R"],[".",".",".","."],[".",".",".","."],["Y","Y","Y","Y"]]
+        self._board = [["Y","Y","R","R"],["Y","Y",".","Y"],[".",".",".","."],[".",".","Y","."]]
         self._current_state = "UNFINISHED"  # the default state of the game with no moves made is "UNFINISHED"
         self._valid_moves = []
 
@@ -70,7 +74,7 @@ class OrthokonBoard:
             print("|", *line[:], "|")
         print("‾" * 11)
 
-    def is_valid(self, piece_row, piece_column): # checks if move is valid
+    def valid_moves(self, piece_row, piece_column): # checks if move is valid
 
         self._valid_moves = []
         column_int = ""
@@ -368,9 +372,57 @@ class OrthokonBoard:
             row_int = ""
             column_int = ""
 
-        #print("current valid moves:", self._valid_moves)
+    def who_won(self):
+        self._valid_moves = []  # clear the valid moves list
+        red_list = []  # an empty list to hold the current Red cell values, to check if Red pieces can make moves
+        yellow_list = []  # an empty list to hold the current Yellow cell values, to check if Yellow pieces can make moves
 
-    def make_move(self, piece_row, piece_column, position_row, position_column):    # method to make each move
+        for row in self._board:     # checks to see if all pieces are Yellow, thus Yellow wins
+            if "R" not in row:
+                continue
+            else:
+                #print("R in row")
+                break
+            self._current_state = "YELLOW_WON"
+            return True
+        for row in self._board:     # checks to see if all pieces are Red, thus Red wins
+            if "Y" not in row:
+                continue
+            else:
+                #print("Y in row")
+                break
+            self._current_state = "RED_WON"
+            return True
+
+        for row in range(4):                            # adds the current Red and Yellow Cell values to their lists
+            for column in range(4):
+                if self._board[row][column] == ".":
+                    continue
+                if self._board[row][column] == "R":
+                    red_list.append((row, column))
+                elif self._board[row][column] == "Y":
+                    yellow_list.append((row, column))
+
+        #print(red_list)
+        #print(yellow_list)
+
+        for tuple in red_list:                      # check if any red pieces can move
+            board.valid_moves(tuple[0], tuple[1])
+
+        if self._valid_moves == []:                 # if no valid moves for any of the red pieces,
+            self._current_state = "YELLOW_WON"      # Yellow wins
+            return True
+
+        for tuple in yellow_list:                      # check if any yellow pieces can move
+            board.valid_moves(tuple[0], tuple[1])
+
+        if self._valid_moves == []:                 # if no valid moves for any of the yellow pieces,
+            self._current_state = "RED_WON"      # Red wins
+            return True
+
+        return True
+
+    def make_move(self, piece_row, piece_column, position_row, position_column):   # Actually moves the piece, if valid
 
         if self._current_state != "UNFINISHED":     # if the game state is anything but "UNFINISHED"
             print("The game is already over")
@@ -385,15 +437,17 @@ class OrthokonBoard:
             print("There's no piece there to move!")
             return False                                    # returns False, and a new valid move must be made
 
-        board.is_valid(piece_row, piece_column)
+        board.valid_moves(piece_row, piece_column)      # calls valid_moves function, which updates the
+                                                        # valid_moves list
 
-        if (position_row, position_column) not in self._valid_moves:  # check if intended move is valid
-            #print("Move is not valid!")
+        if (position_row, position_column) not in self._valid_moves:  # check intended move against valid_moves
+            print("Move is not valid. Current valid moves:", self._valid_moves)
             return False
         else:
             print("Move is valid!")
 
-        if self._board[piece_row][piece_column] == "Y":
+
+        if self._board[piece_row][piece_column] == "Y":         # Flips the pieces next to moving Y piece, if applicable
             self._board[position_row][position_column] = "Y"
             self._board[piece_row][piece_column] = "."
             if position_column > 0:  # check left for piece to change
@@ -408,7 +462,7 @@ class OrthokonBoard:
             if position_row < 3:  # check down for piece to change
                 if self._board[position_row + 1][position_column] != ".":
                     self._board[position_row + 1][position_column] = "Y"
-        if self._board[piece_row][piece_column] == "R":
+        if self._board[piece_row][piece_column] == "R":         # Flips the pieces next to moving Y piece, if applicable
             self._board[position_row][position_column] = "R"
             self._board[piece_row][piece_column] = "."
             if position_column > 0:  # check left for piece to change
@@ -424,52 +478,15 @@ class OrthokonBoard:
                 if self._board[position_row + 1][position_column] != ".":
                     self._board[position_row + 1][position_column] = "R"
 
-        for row in self._board:
-            if "R" not in row:
-                continue
-            else:
-                print("R in row")
-                break
-            self._current_state = "YELLOW_WON"
-            return True
-        for row in self._board:
-            if "Y" not in row:
-                continue
-            else:
-                print("Y in row")
-                break
-            self._current_state = "RED_WON"
-            return True
-
-#        red_list = []
-#        yellow_list = []
-#
-#        for row in range(4) :
-#            for column in range(4) :
-#                if self._board[row][column] == "." :
-#                    continue
-#                if self._board[row][column] == "R" :
-#                    red_list.append((row,column))
-#                elif self._board[row][column] == "Y" :
-#                    yellow_list.append((row,column))
-#
-#        print(red_list)
-
-
-
-
-
-
-
-
-        # self._board[piece_row][piece_column]
-        # self._board[position_row][position_column]
-
+        board.who_won()
 
 
 board = OrthokonBoard()
 board.print_board()
-board.make_move(3,0,1,0)
+
+board.make_move(3,2,1,2)
 board.print_board()
 print(board.get_current_state())
+
+
 
