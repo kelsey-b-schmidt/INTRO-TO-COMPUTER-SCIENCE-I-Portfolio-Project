@@ -391,8 +391,12 @@ class OrthokonBoard:
 board = OrthokonBoard()
 board.print_board()
 
-board.make_move(3,2,1,2)
+board.make_move(3,2,1,0)  # The yellow player moves a piece diagonally, flipping one red piece to yellow
+board.make_move(0,2,2,0)  # The red player moves a piece diagonally, flipping two yellow pieces to red
+
 board.print_board()
+
+
 print(board.get_current_state())
 
 
