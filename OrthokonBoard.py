@@ -387,3 +387,5 @@ class OrthokonBoard:
 
         self.who_won()     # calls the who_won method to see if any winning conditions have been met
 
+        return True
+
